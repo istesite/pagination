@@ -35,7 +35,15 @@ ul.pagination > li > a:hover {
 
 <?php
 include_once "pagination.class.php";
-$pagi = new Pagi(15, 'page');
+$pagi = new Pagi(3, 'page');
 echo $pagi->getContent();
+echo "\n<br>";
 
+$pagi->setTotalPage(25);
+echo $pagi->getContent();
+echo "\n<br>";
+
+$pagi->setPageLimit(5);
+echo $pagi->getContent();
+echo "\n<br>";
 ?>
