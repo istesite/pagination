@@ -2,7 +2,7 @@
 class Pagi{
 	var $totalPage;		
 	var $currPage;
-	var $pageLimit = 4;				
+	var $pageLimit = 4;
 	var $pageGetVar = 'page';
 	var $showFirstLast = true;
 	var $showPrevNext = true;
@@ -31,11 +31,46 @@ class Pagi{
 			$this->currPage = 1;
 		}
 	}
+
+	function setTotalPage($total = 0){
+		$this->totalPage = $total;
+	}
+
+	function setPageLimit($pageLimit = 0){
+		$this->pageLimit = $pageLimit;
+	}
+
+	function setPageGetVar($pageVar = 'page'){
+		$this->pageGetVar = $pageVar;
+	}
+
+	function setCurrLang($lang = ''){
+		$this->currLang = $lang;
+	}
+
+	function showFirstLast(){
+		$this->showFirstLast = true;
+	}
+
+	function hideFirstLast(){
+		$this->showFirstLast = false;
+	}
+
+	function showPrevNext(){
+		$this->showPrevNext = true;
+	}
+
+	function hidePrevNext(){
+		$this->showPrevNext = false;
+	}
 	
 	function setUrl($page = 1){
 		$get = $_GET;
 		if(count($get) > 0){
 			$url = array();
+			if(!isset($get[$this->pageGetVar])){
+				$url[] = $this->pageGetVar . '=' . $page;
+			}
 			foreach($get as $k=>$v){
 				if($k == $this->pageGetVar){
 					$url[] = $k . '=' . $page;
@@ -74,13 +109,19 @@ class Pagi{
 				else if($this->currPage <= $this->pageLimit){
 					$first = 1;
 					$last = ($this->pageLimit * 2) + 1;
+					if($last > $this->totalPage){
+						$last = $this->totalPage;
+					}
 				}
 				else if($this->currPage + $this->pageLimit >= $this->totalPage){
 					$last = $this->totalPage;
 					$first = $this->totalPage - ($this->pageLimit * 2);
+					if($first < 1){
+						$first = 1;
+					}
 				}
 			}
-			
+
 			for($p = $first; $p <= $last; $p++){
 				if($p == $first and !isset($cont['first'])){
 					#-> İlk linki ekleme
@@ -107,7 +148,11 @@ class Pagi{
 					}
 					
 					#-> Boşluk ekleme
-					if($this->pageLimit > 0 and $this->currPage > $this->pageLimit and $this->totalPage > $this->pageLimit and $this->currPage - $this->pageLimit > 1){
+					if( $this->pageLimit > 0 and
+						($this->pageLimit * 2) + 1 < $this->totalPage and
+						$this->currPage > $this->pageLimit and
+						$this->currPage - $this->pageLimit > 1
+					){
 						$cont['space_first'] = array('url' => $this->setUrl(0), 'active' => 'active');
 					}
 				}
@@ -125,7 +170,10 @@ class Pagi{
 				
 				if($p == $last){	
 					#-> Boşluk ekleme
-					if($this->pageLimit > 0 and $this->currPage < $this->totalPage - $this->pageLimit and $this->totalPage > $this->pageLimit){
+					if( $this->pageLimit > 0 and
+						($this->pageLimit * 2) + 1 < $this->totalPage and
+						$this->currPage < $this->totalPage - $this->pageLimit
+					){
 						$cont['space_last'] = array('url' => $this->setUrl(0), 'active' => 'active');
 					}
 					
