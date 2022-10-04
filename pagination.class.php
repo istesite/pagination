@@ -2,11 +2,14 @@
 class Pagi{
 	var $totalPage;		
 	var $currPage;
+
+	//-> Settings
 	var $pageLimit = 4;
-	var $pageGetVar = 'page';
-	var $showFirstLast = true;
-	var $showPrevNext = true;
-	var $currLang = 'tr';
+	var $pageGetVar = 'page';       //-> Url pagination parameter name
+	var $showFirstLast = true;      //-> First - Last button show status
+	var $showPrevNext = true;       //-> Previous - Next button show status
+	var $showInput = true;          //-> Text - Number box show status
+	var $currLang = 'tr';           //-> Default language code
 	
 	var $lang = array(
 		'tr' => array('first' => '« İlk', 'last' => 'Son »', 'prev' => 'Önceki', 'next' => 'Sonraki', 'space_first' => '...', 'space_last' => '...'),
@@ -215,6 +218,10 @@ class Pagi{
 						$disp[] = '<li><span>'.$this->getLangText($pp).'</span></li>';						
 					}
 				}
+			}
+
+			if($this->showInput) {
+				$disp = array_merge(array("<li><input type='number' value='" . $this->currPage . "' onChange='var wl1 = window.location; var upr = new URLSearchParams(wl1.search); upr.set(\"" . $this->pageGetVar . "\", this.value); window.location = wl1.origin + wl1.pathname + \"?\" + upr.toString();'></li>"), $disp);
 			}
 			return "<ul class='pagination'>\n" . implode("\r\n", $disp) . "\n</ul>";
 		}

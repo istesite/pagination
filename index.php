@@ -31,6 +31,19 @@ ul.pagination > li > span {
 ul.pagination > li > a:hover { 
 	color:#333; background:#de9;
 	}
+
+ul.pagination > li > input[type="text"], ul.pagination > li > input[type="number"] {
+    display: inline-block;
+    margin: 2px 0.5px;
+    padding:4px 7px;
+    border-radius:5px;
+    max-width:50px;
+    border:1px solid #666;
+    color:#333;
+    background:#eee;
+    font-family: Trebuchet MS;
+    font-size:13px;
+}
 </style>
 
 <?php
